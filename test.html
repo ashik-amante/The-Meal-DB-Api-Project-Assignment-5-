@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#"><img class="logo" height="50px" width="50px" alt="Panda Commerce" src="cook.png" /></a>
+  
+        <div class="collapse navbar-collapse d-lg-flex justify-content-end " id="navbarTogglerDemo03">
+            <div>
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item ">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Product</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">About Us</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link " href="#">Contact Us</a>
+            </li>
+          </ul>
+          </div>
+        </div>
+      </nav>
+    
+   <div class="nav navbar-light bg-light justify-content-center">
+    <input  id="search" type="search" placeholder="search by meal catagory" >
+    <button class="btn btn-outline-success   "  onclick="display()" id="button" type="submit" >Search</button>
+</div>
+
+    <div id="main">
+
+
+    </div>
+    <div id="info">
+
+    </div>
+    <script>
+        function display (){
+            document.getElementById("main").style.display = "grid";
+            const id = document.getElementById("search").value;
+            const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${id}`;
+          
+            
+             fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                for(let i=0; i< data.meals.length ; i++){
+                    console.log(data.meals[i]);
+                    const menuName = data.meals[i].strMeal;
+                    const div = document.createElement("div");
+                    div.className = "menu";
+
+
+                    const info = `
+                    
+                    <img src="${data.meals[i].strMealThumb}" />
+                    <p>${menuName}</p>
+                    <button onclick="detail('${data.meals[i].idMeal}')">Details</button>
+                  
+                    `
+
+                    div.innerHTML = info ;
+                    const main =  document.getElementById("main");
+                    main.appendChild(div);
+                  
+               
+                   
+                }
+                
+                
+                //console.log(data.meals.length);
+                
+               
+            
+
+            
+
+        })
+        }
+        window.detail = data => {
+                    const link = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${data}`;
+                  fetch(link)
+                  .then(res => res.json())
+                  .then(meal =>{
+                      document.getElementById("main").style.display = "none";
+                      const info = document.getElementById("info");
+                      const process = `
+                      <img src="${meal.meals[0].strMealThumb}" />
+                      <h2>${meal.meals[0].strMeal} </h2>
+                      
+                      <h3>Ingredients</h3>
+                    <ul id="list">
+                        <li>Ingredient 1: ${meal.meals[0].strIngredient1}</li>
+                        <li>Ingredient 2: ${meal.meals[0].strIngredient2}</li>
+                        <li>Ingredient 3: ${meal.meals[0].strIngredient3}</li>
+                        <li>Ingredient 4:${meal.meals[0].strIngredient4}</li>
+                        <li>Ingredient 5: ${meal.meals[0].strIngredient5}</li>
+                        <li>Ingredient 6: ${meal.meals[0].strIngredient6}</li>
+                        <li>Ingredient 7: ${meal.meals[0].strIngredient7}</li>
+                        <li>Ingredient 8: ${meal.meals[0].strIngredient8}</li>
+                        <li>Ingredient 9: ${meal.meals[0].strIngredient9}</li>
+                        <li>Ingredient 10: ${meal.meals[0].strIngredient10}</li>
+                        <li>Ingredient 11: ${meal.meals[0].strIngredient11}</li>
+                        <li>Ingredient 12: ${meal.meals[0].strIngredient12}</li>
+                    
+                    </ul>
+                    <h3>Cooking Process</h3>
+
+                      <p>${meal.meals[0].strInstructions}</p>
+
+                      `
+                    //   for(let i=0;i<20; i++)
+                    //   {
+                    //       const ul = document.getElementById("list");
+                    //       const ingredient = `<li>${meal.meals[0].strIngredient1}</li>`
+                    //       ul.appendChild(ingredient);
+                    //   }
+                       const newDiv = document.createElement("div");
+                       newDiv.className = "newDiv";
+                       newDiv.innerHTML = process;
+                       info.appendChild(newDiv);
+
+
+
+                      console.log(meal);  
+                  })
+
+                
+                };
+
+      
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+#main {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 10px;
+}
+.menu img {
+    width: 300px;
+    height: 200px;
+}
+.newDiv img{
+    height: 200px;
+    width: 200px;
+
+}
